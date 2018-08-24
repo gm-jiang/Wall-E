@@ -1,5 +1,9 @@
-#ifndef __BSP_UART_H
-#define __BSP_UART_H
+#ifndef __BSP_PORT_H
+#define __BSP_PORT_H
+
+#ifdef __cpluspluss
+extern "C" {
+#endif
 
 #include "stm32f10x.h"
 
@@ -26,6 +30,10 @@
 #define USART3_PORT              GPIOB
 #define USART3_BAUDRATE          115200
 
-void serial_init(void);
+void DebugUartInit(void);
+
+#ifdef __cpluspluss
+}
+#endif
 
 #endif

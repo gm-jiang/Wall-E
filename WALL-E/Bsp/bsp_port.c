@@ -1,10 +1,10 @@
 #include "stm32f10x.h"
-#include "bsp_uart.h"
+#include "bsp_port.h"
 #include "string.h"
 #include "stm32f10x_rcc.h"
 
 
-void serial_init(void)
+void DebugUartInit(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure;
@@ -34,7 +34,7 @@ void serial_init(void)
 
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
     NVIC_Init(&NVIC_InitStructure);
 
     USART_Cmd(USART1, ENABLE);
