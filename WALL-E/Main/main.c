@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
   * @file    Project/main.c 
-  * @author  SMARTLOCK
+  * @author  WALL-E
   * @version V3.5.0
-  * @date    25-02-2011
+  * @date    25-08-2018
   * @brief   Main program body
   ******************************************************************************
   * @attention
@@ -16,8 +16,8 @@
 #include "stm32f10x.h"
 #include <string.h>
 
-#include "system_init.h"
 #include "dbg_print.h"
+#include "bsp_port.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -94,6 +94,12 @@ void recvTask(void *pvParameters)
     }
 }
 
+static system_hw_init(void)
+{
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+    DebugUartInit();
+}
+
 /**
   * @brief  Main program.
   * @param  None
@@ -117,7 +123,7 @@ int main(void)
         - Receive and transmit enabled
   */
   /* Infinite loop */
-    system_init();
+    system_hw_init();
 
     queueTest = xQueueCreate(3, sizeof(send_msg_t));
     if (queueTest == NULL) {
