@@ -31,6 +31,7 @@ extern "C" {
 #define USART3_BAUDRATE          115200
 
 void DebugUartInit(void);
+void wall_e_pwm_init(void);
 
 #ifdef __cpluspluss
 }

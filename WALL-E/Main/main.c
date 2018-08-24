@@ -41,6 +41,7 @@
 
 TaskHandle_t sendHandle;
 TaskHandle_t recvHandle;
+TaskHandle_t ledHandle;
 QueueHandle_t queueTest;
 
 xSemaphoreHandle mutex = NULL;
@@ -94,10 +95,30 @@ void recvTask(void *pvParameters)
     }
 }
 
+void ledTask(void *pvParameters)
+{
+    uint8_t dir = 1;
+    uint16_t cnt = 0;
+    while(1)
+    {
+        if (dir == 1) {
+            TIM_SetCompare4(TIM3, cnt++);
+            //TIM_SetCompare3(TIM3, cnt++);
+            if (cnt > 666) {dir = 0;}
+        } else {
+            TIM_SetCompare4(TIM3, cnt--);
+            //TIM_SetCompare3(TIM3, cnt--);
+            if (cnt == 0) {dir = 1;}
+        }
+        vTaskDelay(5);
+    }
+}
+
 static system_hw_init(void)
 {
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
     DebugUartInit();
+    wall_e_pwm_init();
 }
 
 /**
@@ -133,6 +154,7 @@ int main(void)
 
     xTaskCreate(sendTask, "send", 200, NULL, 1, &sendHandle);
     xTaskCreate(recvTask, "recv", 200, NULL, 1, &recvHandle);
+    xTaskCreate(ledTask, "led", 200, NULL, 1, &ledHandle);
     // Start the FreeRTOS scheduler
     vTaskStartScheduler();
 
